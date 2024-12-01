@@ -1,5 +1,5 @@
 ---
-title: "Relatório de Captura - SecurePass"
+title: "Relatório de dados - Dispositivo 1 linha 1 - SecurePass"
 output: pdf_document
 ---
 
@@ -7,30 +7,30 @@ output: pdf_document
 
 Este relatório apresenta as análises de desempenho e riscos com base nas capturas de dados dos últimos 14 dias.
 
-## Gráfico 1: Média de Upload (RedeEnviada)
+## Gráfico 1: Média de Upload
 
 Este gráfico mostra a média diária de dados enviados (upload) pelos dispositivos monitorados.
 
-![Média de Upload (RedeEnviada)](grafico_upload.png)
+![Média de Upload](C:/Users/Gabri/Downloads/securePassETL/relatorioGerente/grafico_upload.png)
 
-## Gráfico 2: Média de Download (RedeRecebida)
+## Gráfico 2: Média de Download
 
 Este gráfico mostra a média diária de dados recebidos (download) pelos dispositivos monitorados.
 
-![Média de Download (RedeRecebida)](grafico_download.png)
+![Média de Download](C:/Users/Gabri/Downloads/securePassETL/relatorioGerente/grafico_download.png)
 
 ## Gráfico 3: Média de Uso de CPU
 
 Este gráfico apresenta a média diária do uso de CPU pelos dispositivos monitorados.
 
-![Média de Uso de CPU](grafico_cpu.png)
+![Média de Uso de CPU](C:/Users/Gabri/Downloads/securePassETL/relatorioGerente/grafico_cpu.png)
 
 ## Gráfico 4: Máquinas em Risco
 
-O gráfico abaixo apresenta o número de máquinas consideradas em risco a cada dia.
+O gráfico abaixo apresenta o número de máquinas consideradas em risco a cada dia da linha 1.
 
-![Máquinas em Risco por Dia](grafico_risco.png)
+![Máquinas em Risco por Dia](C:/Users/Gabri/Downloads/securePassETL/relatorioGerente/grafico_risco.png)
 
 # Conclusão
 
-Os gráficos acima destacam as métricas mais relevantes do monitoramento de dispositivos nos últimos 14 dias. As análises específicas podem ser feitas com base nos padrões observados.
+Os gráficos acima destacam as métricas mais relevantes do monitoramento do dispositivo nos últimos 14 dias, além da quantidade de dispositivos em risco da linha 1. As análises específicas podem ser feitas com base nos padrões observados.

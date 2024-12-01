@@ -23,37 +23,40 @@ db <- dbConnect(MySQL(),
 query_upload <- "
 SELECT DATE(dataRegistro) AS dia, AVG(registro) AS media_upload
 FROM captura
-JOIN componente ON captura.fkComponente = componente.idComponente
-WHERE componente.nome = 'RedeEnviada' AND captura.dataRegistro BETWEEN '2024-10-15' AND '2024-10-28'
+JOIN componente ON captura.fkComponente = componente.idComponente 
+JOIN dispositivo ON captura.fkDispositivo = 1
+WHERE componente.nome = 'RedeEnviada' AND captura.dataRegistro BETWEEN '2024-11-19' AND '2024-12-02'
 GROUP BY DATE(captura.dataRegistro);
 "
 
 query_download <- "
 SELECT DATE(dataRegistro) AS dia, AVG(registro) AS media_download
 FROM captura
-JOIN componente ON captura.fkComponente = componente.idComponente
-WHERE componente.nome = 'RedeRecebida' AND captura.dataRegistro BETWEEN '2024-10-15' AND '2024-10-28'
+JOIN componente ON captura.fkComponente = componente.idComponente 
+JOIN dispositivo ON captura.fkDispositivo = 1
+WHERE componente.nome = 'RedeRecebida' AND captura.dataRegistro BETWEEN '2024-11-19' AND '2024-12-02'
 GROUP BY DATE(captura.dataRegistro);
 "
 
 query_cpu <- "
 SELECT DATE(dataRegistro) AS dia, AVG(registro) AS media_cpu
 FROM captura
-JOIN componente ON captura.fkComponente = componente.idComponente
-WHERE componente.nome = 'PercCPU' AND captura.dataRegistro BETWEEN '2024-10-15' AND '2024-10-28'
+JOIN componente ON captura.fkComponente = componente.idComponente 
+JOIN dispositivo ON captura.fkDispositivo = 1
+WHERE componente.nome = 'PercCPU' AND captura.dataRegistro BETWEEN '2024-11-19' AND '2024-12-02'
 GROUP BY DATE(captura.dataRegistro);
 "
 
 query_risco <- "
 SELECT DATE(captura.dataRegistro) AS dia, COUNT(DISTINCT dispositivo.idDispositivo) AS maquinas_em_risco
 FROM captura
-JOIN dispositivo ON captura.fkDispositivo = dispositivo.idDispositivo
+JOIN dispositivo ON captura.fkDispositivo = 1
 JOIN limite ON captura.fkComponente = limite.fkComponente AND captura.fkDispositivo = limite.fkDispositivo
 WHERE 
     (limite.tipo = 'acima' AND captura.registro > limite.valor)
     OR 
     (limite.tipo = 'abaixo' AND captura.registro < limite.valor)
-    AND dataRegistro BETWEEN '2024-10-15' AND '2024-10-28'
+    AND dataRegistro BETWEEN '2024-11-19' AND '2024-12-02'
 GROUP BY DATE(captura.dataRegistro);
 "
 
@@ -64,32 +67,43 @@ dados_risco <- dbGetQuery(db, query_risco)
 
 dbDisconnect(db)
 
+dados_risco <- dados_risco %>%
+  mutate(dia = as.Date(dia))
+todos_os_dias <- seq.Date(as.Date("2024-11-19"), as.Date("2024-12-02"), by = "day")
+dados_risco_completos <- dados_risco %>%
+  right_join(data.frame(dia = todos_os_dias), by = "dia") %>%
+  mutate(maquinas_em_risco = ifelse(is.na(maquinas_em_risco), 0, maquinas_em_risco))
+
 grafico_upload <- ggplot(dados_upload, aes(x = dia, y = media_upload)) +
-  geom_line(color = "blue") +
-  labs(title = "Média de Upload (RedeEnviada)", x = "Dia", y = "Média (%)") +
-  theme_minimal()
+  geom_col(fill = "blue") +
+  labs(title = "Média de Upload", x = "Dia", y = "Média (%)") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 grafico_download <- ggplot(dados_download, aes(x = dia, y = media_download)) +
-  geom_line(color = "green") +
-  labs(title = "Média de Download (RedeRecebida)", x = "Dia", y = "Média (%)") +
-  theme_minimal()
+  geom_col(fill = "green") +
+  labs(title = "Média de Download", x = "Dia", y = "Média (%)") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 grafico_cpu <- ggplot(dados_cpu, aes(x = dia, y = media_cpu)) +
-  geom_line(color = "red") +
+  geom_col(fill = "orange") +
   labs(title = "Média de Uso de CPU", x = "Dia", y = "Média (%)") +
-  theme_minimal()
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
-grafico_risco <- ggplot(dados_risco, aes(x = dia, y = maquinas_em_risco)) +
-  geom_bar(stat = "identity", fill = "orange") +
+grafico_risco <- ggplot(dados_risco_completos, aes(x = dia, y = maquinas_em_risco)) +
+  geom_bar(stat = "identity", fill = "red") +
   labs(title = "Máquinas em Risco por Dia", x = "Dia", y = "Quantidade de Máquinas") +
-  theme_minimal()
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
-ggsave("C:/Users/Gabri/Downloads/teste/grafico_upload.png", grafico_upload, width = 8, height = 5)
-ggsave("C:/Users/Gabri/Downloads/teste/grafico_download.png", grafico_download, width = 8, height = 5)
-ggsave("C:/Users/Gabri/Downloads/teste/grafico_cpu.png", grafico_cpu, width = 8, height = 5)
-ggsave("C:/Users/Gabri/Downloads/teste/grafico_risco.png", grafico_risco, width = 8, height = 5)
+ggsave("C:/Users/Gabri/Downloads/securePassETL/relatorioGerente/grafico_upload.png", grafico_upload, width = 8, height = 5)
+ggsave("C:/Users/Gabri/Downloads/securePassETL/relatorioGerente/grafico_download.png", grafico_download, width = 8, height = 5)
+ggsave("C:/Users/Gabri/Downloads/securePassETL/relatorioGerente/grafico_cpu.png", grafico_cpu, width = 8, height = 5)
+ggsave("C:/Users/Gabri/Downloads/securePassETL/relatorioGerente/grafico_risco.png", grafico_risco, width = 8, height = 5)
 
-rmarkdown::render(input = "C:/Users/Gabri/Downloads/teste/relatorio.Rmd", 
+rmarkdown::render(input = "C:/Users/Gabri/Downloads/securePassETL/relatorioGerente/relatorio.Rmd", 
                   output_format = "pdf_document", 
                   output_file = "relatorio_final.pdf", 
-                  output_dir = "C:/Users/Gabri/Downloads/teste")
+                  output_dir = "C:/Users/Gabri/Downloads/securePassETL/relatorioGerente")
