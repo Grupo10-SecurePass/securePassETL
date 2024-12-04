@@ -1,6 +1,10 @@
 ---
-title: "Relatório de dados - Dispositivo 1 linha 1 - SecurePass"
+title: "Relatório de Monitoramento - Dispositivo 1 da Linha 1 - SecurePass"
 output: pdf_document
+mainfont: Arial
+header-includes:
+  - \usepackage[margin=1in]{geometry}
+  - \setlength{\parskip}{0pt}
 ---
 
 # Relatório de Captura
@@ -9,28 +13,28 @@ Este relatório apresenta as análises de desempenho e riscos com base nas captu
 
 ## Gráfico 1: Média de Upload
 
-Este gráfico mostra a média diária de dados enviados (upload) pelos dispositivos monitorados.
+Média diária de dados enviados (upload), refletindo o tráfego de saída gerado pelos dispositivos monitorados. Essa métrica é importante para identificar padrões de uso e potenciais gargalos na largura de banda.
 
 ![Média de Upload](C:/Users/Gabri/Downloads/securePassETL/relatorioGerente/grafico_upload.png)
 
 ## Gráfico 2: Média de Download
 
-Este gráfico mostra a média diária de dados recebidos (download) pelos dispositivos monitorados.
+Média diária de dados recebidos (download), indicando o volume de tráfego de entrada gerado pelos dispositivos. Este dado auxilia na análise da capacidade de rede e no planejamento de recursos.
 
 ![Média de Download](C:/Users/Gabri/Downloads/securePassETL/relatorioGerente/grafico_download.png)
 
 ## Gráfico 3: Média de Uso de CPU
 
-Este gráfico apresenta a média diária do uso de CPU pelos dispositivos monitorados.
+Média diária de uso de CPU, indicando a carga de processamento nos dispositivos monitorados. Essa informação ajuda a avaliar a eficiência operacional e identificar necessidades de otimização ou atualizações.
 
 ![Média de Uso de CPU](C:/Users/Gabri/Downloads/securePassETL/relatorioGerente/grafico_cpu.png)
 
 ## Gráfico 4: Máquinas em Risco
 
-O gráfico abaixo apresenta o número de máquinas consideradas em risco a cada dia da linha 1.
+Número diário de máquinas em situação de risco, baseado nos limites de segurança definidos. Este dado é essencial para identificar vulnerabilidades e priorizar ações corretivas.
 
 ![Máquinas em Risco por Dia](C:/Users/Gabri/Downloads/securePassETL/relatorioGerente/grafico_risco.png)
 
 # Conclusão
 
-Os gráficos acima destacam as métricas mais relevantes do monitoramento do dispositivo nos últimos 14 dias, além da quantidade de dispositivos em risco da linha 1. As análises específicas podem ser feitas com base nos padrões observados.
+Este relatório fornece uma visão abrangente sobre o desempenho e os riscos dos dispositivos monitorados nos últimos 14 dias. Ele identifica padrões críticos de tráfego de rede, carga de processamento e segurança operacional. Recomenda-se atenção especial às máquinas em risco, bem como à análise do tráfego de upload e download para ajustes na infraestrutura de rede.
